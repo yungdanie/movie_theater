@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Главная страница</title>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Кинотеатр</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#">Сеансы <span class="sr-only">(current)</span></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <div class="card" th:each="sess : ${sessions}" style="margin: 30px">
+        <h5 class="card-header" th:text="*{sess.getName()}"></h5>
+        <div class="card-body">
+            <form id="add" th:action="@{/addTicketForm}" method="GET">
+            <h5 class="card-title" th:text="*{sess.getDescription()}" style="margin: 10px"></h5>
+                <br>
+            <div class="card">
+                <div class="container">
+                    <div class="row text-center">
+                        <table class="table-bordered" style="width: 100%; background-color: white; margin: 20px">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th scope="col"
+                                    th:each="col : *{#numbers.sequence(1, sess.getHall().getColumn(), 1)}"
+                                    th:text="${col}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="row : *{#numbers.sequence(1, sess.getHall().getRow(), 1)}">
+                                <th scope="row" th:text="${row}"> </th>
+                                <td th:each="obj : *{#numbers.sequence(1, sess.getHall().getColumn(), 1)}" >
+                                    <div th:each="ticket : *{sess.getTickets()}"
+                                         th:with="cond=${ticket.getColumn()} == ${obj} and ${ticket.getRow()} == ${row}">
+                                        <div th:switch="${cond}">
+                                            <div class="form-check" th:case="TRUE">
+                                                <label for="disabled"></label>
+                                                <input class="form-check-input" type="radio" id="disabled" name="disabled" checked disabled>
+                                            </div>
+                                            <div class="form-check" th:case="FALSE">
+                                                    <label for="colrow"></label>
+                                                    <input type="hidden" th:value="sess.getId()" id="sessionId" name="sessionId">
+                                                    <input class="form-check-input" th:value="|${obj}+${row}|" type="radio" id="colRow" name="colRow">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <button  type="submit" form="add" class="btn btn-primary" style="margin: 20px">Выбрать место</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
