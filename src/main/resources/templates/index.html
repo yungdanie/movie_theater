@@ -3,7 +3,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta firstName="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -36,7 +36,7 @@
         <h5 class="card-header" th:text="*{sess.getName()}"></h5>
         <div class="card-body">
             <form id="add" th:action="@{/addTicketForm}" method="GET">
-            <h5 class="card-title" th:text="*{sess.getDescription()}" style="margin: 10px"></h5>
+            <h5 class="card-title" th:text="${sess.getDescription()}" style="margin: 10px"></h5>
                 <br>
             <div class="card">
                 <div class="container">
@@ -46,25 +46,25 @@
                             <tr>
                                 <th></th>
                                 <th scope="col"
-                                    th:each="col : *{#numbers.sequence(1, sess.getHall().getColumn(), 1)}"
+                                    th:each="col : ${#numbers.sequence(1, sess.getHall().getColumn(), 1)}"
                                     th:text="${col}"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="row : *{#numbers.sequence(1, sess.getHall().getRow(), 1)}">
+                            <tr th:each="row : ${#numbers.sequence(1, sess.getHall().getRow(), 1)}">
                                 <th scope="row" th:text="${row}"> </th>
-                                <td th:each="obj : *{#numbers.sequence(1, sess.getHall().getColumn(), 1)}" >
-                                    <div th:each="ticket : *{sess.getTickets()}"
+                                <td th:each="obj : ${#numbers.sequence(1, sess.getHall().getColumn(), 1)}" >
+                                    <div th:each="ticket : ${sess.getTickets()}"
                                          th:with="cond=${ticket.getColumn()} == ${obj} and ${ticket.getRow()} == ${row}">
                                         <div th:switch="${cond}">
                                             <div class="form-check" th:case="TRUE">
                                                 <label for="disabled"></label>
-                                                <input class="form-check-input" type="radio" id="disabled" name="disabled" checked disabled>
+                                                <input class="form-check-input" type="radio" id="disabled" firstName="disabled" checked disabled>
                                             </div>
                                             <div class="form-check" th:case="FALSE">
-                                                    <label for="colrow"></label>
-                                                    <input type="hidden" th:value="sess.getId()" id="sessionId" name="sessionId">
-                                                    <input class="form-check-input" th:value="|${obj}+${row}|" type="radio" id="colRow" name="colRow">
+                                                    <label for="colRow"></label>
+                                                    <input type="hidden" th:value="${sess.getId()}" firstName="sessionId">
+                                                    <input class="form-check-input" th:value="|${obj}/${row}|" type="radio" id="colRow" firstName="colRow">
                                             </div>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </div>
-                <button  type="submit" form="add" class="btn btn-primary" style="margin: 20px">Выбрать место</button>
+                <button type="submit" form="add" class="btn btn-primary" style="margin: 20px">Выбрать место</button>
             </form>
         </div>
     </div>

@@ -46,6 +46,10 @@ public class TicketDBStore {
              PreparedStatement pr =
                      cn.prepareStatement
                              ("insert into ticket(session_id, pos_row, cell, user_id) values (?, ?, ?, ?)")) {
+            pr.setInt(1, ticket.getSessionId());
+            pr.setInt(2, ticket.getColumn());
+            pr.setInt(3, ticket.getRow());
+            pr.setInt(4, ticket.getUser().getUserId());
             try (ResultSet resultSet = pr.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     ticket.setTicketId(resultSet.getInt(1));

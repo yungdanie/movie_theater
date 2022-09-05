@@ -1,6 +1,6 @@
 CREATE TABLE sessions (
     session_id SERIAL PRIMARY KEY,
-    name text not null,
+    firstName text not null,
     description text not null,
     start_time timestamp not null,
     end_time timestamp not null,

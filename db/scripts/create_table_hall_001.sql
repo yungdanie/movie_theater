@@ -1,6 +1,6 @@
 CREATE TABLE hall (
     hall_id SERIAL PRIMARY KEY,
-    name text unique,
+    firstName text unique,
     columns int not null,
     rows int not null
 );
