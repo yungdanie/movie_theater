@@ -4,6 +4,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
 import ru.movietheater.model.Session;
+import ru.movietheater.model.Ticket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Repository
 @ThreadSafe
@@ -36,13 +39,15 @@ public class SessionDBStore {
             try (ResultSet resultSet = pr.executeQuery()) {
                 if (resultSet.next()) {
                     int sessionId = resultSet.getInt("session_id");
+                    List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
+                    List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
                     session = Optional.of(new Session(sessionId, resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getTicketsBySessionId(sessionId)
-                            ));
+                            ticketDBStore.getTicketsBySessionId(sessionId),
+                            occColumns));
                 }
             }
         } catch (SQLException e) {
@@ -60,18 +65,25 @@ public class SessionDBStore {
             try (ResultSet resultSet = pr.executeQuery()) {
                 while (resultSet.next()) {
                     int sessionId = resultSet.getInt("session_id");
+                    List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
+                    List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
                     sessions.add((new Session(sessionId,
                             resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getTicketsBySessionId(sessionId))));
+                            ticketDBStore.getTicketsBySessionId(sessionId),
+                            occColumns)));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return sessions;
+    }
+
+    private List<String> getList(List<Ticket> ticketList, Function<Ticket, String> function) {
+        return ticketList.stream().map(function).collect(Collectors.toList());
     }
 }

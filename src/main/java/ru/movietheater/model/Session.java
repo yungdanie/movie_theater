@@ -14,10 +14,12 @@ public class Session {
 
     private List<Ticket> tickets;
 
+    private List<String> occPlaces;
+
     public Session() {
     }
 
-    public Session(int id, String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets) {
+    public Session(int id, String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets, List<String> occPlaces) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -25,17 +27,13 @@ public class Session {
         this.endTime = endTime;
         this.hall = hall;
         this.tickets = tickets;
+        this.occPlaces = occPlaces;
     }
 
-    public Session(String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall) {
-        this.name = name;
-        this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.hall = hall;
-    }
-
-    public Session(String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets) {
+    public Session(int id, String name, String description,
+                   LocalDateTime startTime, LocalDateTime endTime,
+                   Hall hall, List<Ticket> tickets) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.startTime = startTime;
@@ -98,5 +96,13 @@ public class Session {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public List<String> getOccPlaces() {
+        return occPlaces;
+    }
+
+    public void setOccPlaces(List<String> occPlaces) {
+        this.occPlaces = occPlaces;
     }
 }

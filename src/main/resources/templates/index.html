@@ -55,10 +55,12 @@
                             <tr th:each="row : ${#numbers.sequence(1, sess.getHall().getRow(), 1)}">
                                 <th scope="row" th:text="${row}"> </th>
                                 <td th:each="obj : ${#numbers.sequence(1, sess.getHall().getColumn(), 1)}" >
-                                    <div th:with="cond=${sess.getTickets().isEmpty()}">
+                                    <div th:with="cond=${sess.getOccPlaces().isEmpty()}">
                                         <div th:switch="${cond}">
                                             <div th:case="FALSE">
-                                                <p th:with="cond=@{|/calcPlace/${sess.getId()}/${obj}/${row}|}">D</p>
+                                                <div th:if="${#lists.contains(sess.getOccPlaces(), obj + '/' + row)}">
+                                                    PP
+                                                </div>
                                             </div>
                                             <div th:case="TRUE">
                                                 <div class="form-check">

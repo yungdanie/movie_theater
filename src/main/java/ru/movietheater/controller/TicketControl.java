@@ -43,8 +43,6 @@ public class TicketControl {
         model.addAttribute("column" ,stringMap.get("column"));
         model.addAttribute("row" ,stringMap.get("row"));
         model.addAttribute("sess", sessionService.getSessionById(sessionId).get());
-        userService.addUser(new User("a", "a", "b", "b"));
-        userService.addUser(new User("a", "a", "b", "b"));
         return "addTicketForm";
     }
 
