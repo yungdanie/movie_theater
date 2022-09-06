@@ -10,7 +10,6 @@ public class Session {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
     private Hall hall;
 
     private List<Ticket> tickets;
@@ -18,13 +17,25 @@ public class Session {
     public Session() {
     }
 
-    public Session(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
     public Session(int id, String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.hall = hall;
+        this.tickets = tickets;
+    }
+
+    public Session(String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall) {
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.hall = hall;
+    }
+
+    public Session(String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets) {
         this.name = name;
         this.description = description;
         this.startTime = startTime;

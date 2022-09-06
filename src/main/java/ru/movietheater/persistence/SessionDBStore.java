@@ -35,13 +35,13 @@ public class SessionDBStore {
             pr.setInt(1, id);
             try (ResultSet resultSet = pr.executeQuery()) {
                 if (resultSet.next()) {
-                    session = Optional.of(new Session(resultSet.getInt("session_id"),
-                            resultSet.getString("name"),
+                    int sessionId = resultSet.getInt("session_id");
+                    session = Optional.of(new Session(sessionId, resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getAllTickets(resultSet.getArray("tickets_id"))
+                            ticketDBStore.getTicketsBySessionId(sessionId)
                             ));
                 }
             }
@@ -59,14 +59,14 @@ public class SessionDBStore {
             pr.setBoolean(1, true);
             try (ResultSet resultSet = pr.executeQuery()) {
                 while (resultSet.next()) {
-                    sessions.add((new Session(resultSet.getInt("session_id"),
+                    int sessionId = resultSet.getInt("session_id");
+                    sessions.add((new Session(sessionId,
                             resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getAllTickets(resultSet.getArray("tickets_id"))
-                    )));
+                            ticketDBStore.getTicketsBySessionId(sessionId))));
                 }
             }
         } catch (SQLException e) {

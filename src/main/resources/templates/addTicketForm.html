@@ -35,31 +35,55 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header text-center">
-                <h5 th:text=""></h5>
+                <h5 th:text="${sess.getName()}"></h5>
+            </div>
+            <div class="card-header text-center">
+                <h6 th:text="${sess.getDescription()}"></h6>
             </div>
             <div class="card-body">
-                <form th:action="@{/registration}" id="addTicket" method="POST">
+
+                <form th:action="@{/createTicket}" id="addTicket" method="POST">
+                    <input type="hidden" th:value="${sess}" name="currentSession">
+                    <input type="hidden" th:value="${column}" name="column">
+                    <input type="hidden" th:value="${row}" name="row">
+                    <input type="hidden" th:value="${sess.getId()}" name="sessionId">
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Имя" id="firstName" name="firstName">
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" placeholder="Имя" id="firstName" name="firstName" required>
+                                </div>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Фамилия" id="surName" name="surName">
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" placeholder="Фамилия" id="surName" name="surName" required>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <div class="text-center">
-                            <label for="email">Email</label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                    <input type="email" class="form-control" id="email" name="email" aria-describedby="inputGroupPrepend" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Телефон" id="phone" name="phone" required>
+                            </div>
                         </div>
-                        <input type="email" class="form-control" id="email" name="email">
-                        <div class="text-center">
-                            <label for="phone">Телефон</label>
-                        </div>
-                        <input type="text" class="form-control" id="phone" name="phone">
                     </div>
-                    <button form="addTicket" type="submit" class="btn btn-primary btn-block">Купить билет</button>
+
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 0">
+                            <div class="card-header" th:text="|Место ${column}, ряд ${row}|">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button form="addTicket" type="submit" class="btn btn-primary btn-block" style="margin-top: 15px">Купить билет</button>
                 </form>
             </div>
         </div>

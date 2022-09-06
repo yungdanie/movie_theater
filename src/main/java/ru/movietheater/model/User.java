@@ -9,23 +9,21 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String firstName, String surName, String email, String phone) {
+    public User(int userId) {
         this.userId = userId;
+    }
+
+    public User(String firstName, String surName, String email, String phone) {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.phone = phone;
     }
 
-    public User(String firstName, String email, String phone) {
-        this.firstName = firstName;
-        this.email = email;
-        this.phone = phone;
-    }
-
-    public User(int userId, String firstName, String email, String phone) {
+    public User(int userId, String firstName, String surName, String email, String phone) {
         this.userId = userId;
         this.firstName = firstName;
+        this.surName = surName;
         this.email = email;
         this.phone = phone;
     }

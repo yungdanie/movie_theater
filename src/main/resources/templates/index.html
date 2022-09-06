@@ -3,7 +3,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta firstName="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -36,12 +36,13 @@
         <h5 class="card-header" th:text="*{sess.getName()}"></h5>
         <div class="card-body">
             <form id="add" th:action="@{/addTicketForm}" method="GET">
+                <input type="hidden" th:value="${sess.getId()}" name="sessionId">
             <h5 class="card-title" th:text="${sess.getDescription()}" style="margin: 10px"></h5>
                 <br>
             <div class="card">
                 <div class="container">
                     <div class="row text-center">
-                        <table class="table-bordered" style="width: 100%; background-color: white; margin: 20px">
+                        <table class="table-bordered" style="width: 100%; background-color: white; margin: 20px;">
                             <thead>
                             <tr>
                                 <th></th>
@@ -54,17 +55,16 @@
                             <tr th:each="row : ${#numbers.sequence(1, sess.getHall().getRow(), 1)}">
                                 <th scope="row" th:text="${row}"> </th>
                                 <td th:each="obj : ${#numbers.sequence(1, sess.getHall().getColumn(), 1)}" >
-                                    <div th:each="ticket : ${sess.getTickets()}"
-                                         th:with="cond=${ticket.getColumn()} == ${obj} and ${ticket.getRow()} == ${row}">
+                                    <div th:with="cond=${sess.getTickets().isEmpty()}">
                                         <div th:switch="${cond}">
-                                            <div class="form-check" th:case="TRUE">
-                                                <label for="disabled"></label>
-                                                <input class="form-check-input" type="radio" id="disabled" firstName="disabled" checked disabled>
+                                            <div th:case="FALSE">
+                                                <p th:with="cond=@{|/calcPlace/${sess.getId()}/${obj}/${row}|}">D</p>
                                             </div>
-                                            <div class="form-check" th:case="FALSE">
+                                            <div th:case="TRUE">
+                                                <div class="form-check">
                                                     <label for="colRow"></label>
-                                                    <input type="hidden" th:value="${sess.getId()}" firstName="sessionId">
-                                                    <input class="form-check-input" th:value="|${obj}/${row}|" type="radio" id="colRow" firstName="colRow">
+                                                    <input class="form-check-input" th:value="|${obj}/${row}|" type="radio" id="colRow" name="colRow">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
