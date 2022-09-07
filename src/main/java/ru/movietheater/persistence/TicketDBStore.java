@@ -26,12 +26,13 @@ public class TicketDBStore {
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
                      cn.prepareStatement
-                             ("insert into ticket(session_id, pos_row, cell, user_id) values (?, ?, ?, ?)")) {
+                             ("insert into ticket(session_id, pos_row, cell, user_id) values (?, ?, ?, ?)",
+                                     PreparedStatement.RETURN_GENERATED_KEYS)) {
             pr.setInt(1, ticket.getSessionId());
             pr.setInt(2, ticket.getColumn());
             pr.setInt(3, ticket.getRow());
             pr.setInt(4, ticket.getUser().getUserId());
-            pr.executeQuery();
+            pr.execute();
             try (ResultSet resultSet = pr.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     ticket.setTicketId(resultSet.getInt(1));

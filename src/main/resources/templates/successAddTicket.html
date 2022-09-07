@@ -3,7 +3,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta firstName="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -26,7 +26,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="#">Сеансы <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" th:href="@{/index}">Сеансы <span class="sr-only"></span></a>
         </div>
     </div>
 </nav>
@@ -37,6 +37,7 @@
             <div class="card-body">
                 <p th:text="|Пользователь ${user.getFirstName()} ${user.getSurName()} успешно добавлен|"></p>
                 <p th:text="|Место ${ticket.getColumn()} ряд ${ticket.getRow()} зарезервировано|"></p>
+                <p th:text="|Сеанс ${thisSession.getName()} на время ${#temporals.format(thisSession.getStartTime(), 'dd-MM-yyyy HH:mm')}|"></p>
             </div>
         </div>
     </div>

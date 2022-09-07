@@ -59,7 +59,16 @@
                                         <div th:switch="${cond}">
                                             <div th:case="FALSE">
                                                 <div th:if="${#lists.contains(sess.getOccPlaces(), obj + '/' + row)}">
-                                                    PP
+                                                    <div class="form-check">
+                                                        <label for="occupied"></label>
+                                                        <input class="form-check-input" type="radio" id="occupied" name="occupied" disabled>
+                                                    </div>
+                                                </div>
+                                                <div th:unless="${#lists.contains(sess.getOccPlaces(), obj + '/' + row)}">
+                                                    <div class="form-check">
+                                                        <label for="colRow"></label>
+                                                        <input class="form-check-input" th:value="|${obj}/${row}|" type="radio" id="colRow" name="colRow">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div th:case="TRUE">

@@ -15,6 +15,7 @@ import ru.movietheater.service.TicketService;
 import ru.movietheater.service.UserService;
 import ru.movietheater.util.ColumnRowSeparator;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,7 +43,12 @@ public class TicketControl {
         Map<String, String> stringMap = ColumnRowSeparator.getColRow(input);
         model.addAttribute("column" ,stringMap.get("column"));
         model.addAttribute("row" ,stringMap.get("row"));
-        model.addAttribute("sess", sessionService.getSessionById(sessionId).get());
+        Optional<Session> optionalSession = sessionService.getSessionById(sessionId);
+        if (optionalSession.isEmpty()) {
+            model.addAttribute("errorMessage", "Выбранный сеанс отсутствует");
+            return "failAction";
+        }
+        model.addAttribute("sess", optionalSession.get());
         return "addTicketForm";
     }
 
@@ -50,7 +56,12 @@ public class TicketControl {
     public String createTicket(@ModelAttribute User user,
                                @ModelAttribute Ticket ticket,
                                Model model) {
-        Optional<User> optionalUser = userService.addUser(user);
+        Optional<User> optionalUser = Optional.empty();
+        try {
+            optionalUser = userService.addUser(user);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            optionalUser = userService.getUserByAttr(user);
+        }
         if (optionalUser.isEmpty()) {
             model.addAttribute("errorMessage", "Ошибка добавления пользователя");
             return "failAddTicketForm";
@@ -61,6 +72,12 @@ public class TicketControl {
             model.addAttribute("errorMessage", "К сожалению выбранные места уже заняты");
             return "failAddTicketForm";
         }
+        Optional<Session> optionalSession = sessionService.getSessionById(ticket.getSessionId());
+        if (optionalSession.isEmpty()) {
+            model.addAttribute("errorMessage", "Выбранный киносеанс отсутствует");
+            return "failAddTicketForm";
+        }
+        model.addAttribute("thisSession", optionalSession.get());
         model.addAttribute("ticket", optionalTicket.get());
         model.addAttribute("user", optionalTicket.get().getUser());
         return "successAddTicket";

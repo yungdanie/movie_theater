@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.movietheater.model.User;
 import ru.movietheater.persistence.UserDBStore;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 
@@ -17,8 +18,12 @@ public class UserService {
         this.store = store;
     }
 
-    public Optional<User> addUser(User user) {
+    public Optional<User> addUser(User user) throws SQLIntegrityConstraintViolationException {
         return store.addUser(user);
+    }
+
+    public Optional<User> getUserByAttr(User user) {
+        return store.getUserByAttr(user);
     }
 
 }

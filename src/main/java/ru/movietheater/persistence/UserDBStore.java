@@ -3,11 +3,9 @@ package ru.movietheater.persistence;
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
-import ru.movietheater.model.Session;
 import ru.movietheater.model.User;
 
 import java.sql.*;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,16 +18,17 @@ public class UserDBStore {
         this.pool = pool;
     }
 
-    public Optional<User> addUser(User user) {
+    public Optional<User> addUser(User user) throws SQLIntegrityConstraintViolationException {
         Optional<User> userOptional = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
-                     cn.prepareStatement("insert into users(firstname, surname, email, phone) VALUES (?, ?, ?, ?)")) {
+                     cn.prepareStatement("insert into users(firstname, surname, email, phone) VALUES (?, ?, ?, ?)",
+                             PreparedStatement.RETURN_GENERATED_KEYS)) {
             pr.setString(1, user.getFirstName());
             pr.setString(2, user.getSurName());
             pr.setString(3, user.getEmail());
             pr.setString(4, user.getPhone());
-            pr.executeQuery();
+            pr.execute();
             try (ResultSet resultSet = pr.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     user.setUserId(resultSet.getInt(1));
@@ -38,7 +37,7 @@ public class UserDBStore {
             }
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
-                userOptional = getUserByAttr(user);
+                throw new SQLIntegrityConstraintViolationException();
             } else {
                 e.printStackTrace();
             }
