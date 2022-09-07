@@ -45,7 +45,6 @@
                         <table class="table-bordered" style="width: 100%; background-color: white; margin: 20px;">
                             <thead>
                             <tr>
-                                <th></th>
                                 <th scope="col"
                                     th:each="col : ${#numbers.sequence(1, sess.getHall().getColumn(), 1)}"
                                     th:text="${col}"></th>
