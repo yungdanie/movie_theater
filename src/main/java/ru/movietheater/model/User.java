@@ -6,6 +6,7 @@ public class User {
     private String surName;
     private String email;
     private String phone;
+
     public User() {
     }
 

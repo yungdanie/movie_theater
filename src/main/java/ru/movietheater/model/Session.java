@@ -19,17 +19,6 @@ public class Session {
     public Session() {
     }
 
-    public Session(int id, String name, String description, LocalDateTime startTime, LocalDateTime endTime, Hall hall, List<Ticket> tickets, List<String> occPlaces) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.hall = hall;
-        this.tickets = tickets;
-        this.occPlaces = occPlaces;
-    }
-
     public Session(int id, String name, String description,
                    LocalDateTime startTime, LocalDateTime endTime,
                    Hall hall, List<Ticket> tickets) {

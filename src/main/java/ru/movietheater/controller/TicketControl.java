@@ -18,8 +18,6 @@ import ru.movietheater.util.ColumnRowSeparator;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 import java.util.Optional;
-
-
 @Controller
 @ThreadSafe
 public class TicketControl {
@@ -41,8 +39,8 @@ public class TicketControl {
                                 @RequestParam("sessionId") int sessionId,
                                 Model model) {
         Map<String, String> stringMap = ColumnRowSeparator.getColRow(input);
-        model.addAttribute("column" ,stringMap.get("column"));
-        model.addAttribute("row" ,stringMap.get("row"));
+        model.addAttribute("column", stringMap.get("column"));
+        model.addAttribute("row", stringMap.get("row"));
         Optional<Session> optionalSession = sessionService.getSessionById(sessionId);
         if (optionalSession.isEmpty()) {
             model.addAttribute("errorMessage", "Выбранный сеанс отсутствует");
@@ -56,7 +54,7 @@ public class TicketControl {
     public String createTicket(@ModelAttribute User user,
                                @ModelAttribute Ticket ticket,
                                Model model) {
-        Optional<User> optionalUser = Optional.empty();
+        Optional<User> optionalUser;
         try {
             optionalUser = userService.addUser(user);
         } catch (SQLIntegrityConstraintViolationException e) {

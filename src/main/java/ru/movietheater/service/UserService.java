@@ -8,7 +8,6 @@ import ru.movietheater.persistence.UserDBStore;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
-
 @Service
 @ThreadSafe
 public class UserService {

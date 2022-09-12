@@ -41,13 +41,14 @@ public class SessionDBStore {
                     int sessionId = resultSet.getInt("session_id");
                     List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
                     List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
-                    session = Optional.of(new Session(sessionId, resultSet.getString("name"),
+                    Session newSession = new Session(sessionId, resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getTicketsBySessionId(sessionId),
-                            occColumns));
+                            ticketDBStore.getTicketsBySessionId(sessionId));
+                    newSession.setOccPlaces(occColumns);
+                    session = Optional.of(newSession);
                 }
             }
         } catch (SQLException e) {
@@ -67,14 +68,15 @@ public class SessionDBStore {
                     int sessionId = resultSet.getInt("session_id");
                     List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
                     List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
-                    sessions.add((new Session(sessionId,
+                    Session newSession = new Session(sessionId,
                             resultSet.getString("name"),
                             resultSet.getString("description"),
                             resultSet.getTimestamp("start_time").toLocalDateTime(),
                             resultSet.getTimestamp("end_time").toLocalDateTime(),
                             hallDBStore.getHallById(resultSet.getInt("hall_id")),
-                            ticketDBStore.getTicketsBySessionId(sessionId),
-                            occColumns)));
+                            ticketDBStore.getTicketsBySessionId(sessionId));
+                    newSession.setOccPlaces(occColumns);
+                    sessions.add(newSession);
                 }
             }
         } catch (SQLException e) {

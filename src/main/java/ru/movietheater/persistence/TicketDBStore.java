@@ -25,8 +25,7 @@ public class TicketDBStore {
         Optional<Ticket> optionalTicket = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
-                     cn.prepareStatement
-                             ("insert into ticket(session_id, pos_row, cell, user_id) values (?, ?, ?, ?)",
+                     cn.prepareStatement("insert into ticket(session_id, pos_row, cell, user_id) values (?, ?, ?, ?)",
                                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             pr.setInt(1, ticket.getSessionId());
             pr.setInt(2, ticket.getColumn());
@@ -49,8 +48,7 @@ public class TicketDBStore {
         List<Ticket> tickets = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
-                     cn.prepareStatement
-                             ("select * from ticket where session_id = ?")) {
+                     cn.prepareStatement("select * from ticket where session_id = ?")) {
             pr.setInt(1, id);
             try (ResultSet resultSet = pr.executeQuery()) {
                 while (resultSet.next()) {

@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.movietheater.model.Ticket;
 import ru.movietheater.persistence.TicketDBStore;
 
-import java.sql.Array;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 @ThreadSafe
