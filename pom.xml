@@ -21,7 +21,7 @@
         <resource.delimiter>${}</resource.delimiter>
         <db.url>jdbc:postgresql://127.0.0.1:5432/theater</db.url>
         <db.username>postgres</db.username>
-        <db.password>PASSWORD</db.password>
+        <db.password>password</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
     </properties>
 
