@@ -19,3 +19,12 @@
 Затем запустить метод "main" класса MovieTheaterApplication. По-умолчанию сервер запускается на порте 8081, управлять 
 этим можно в файле "application.properties".
 
+# Изображения страниц приложения
+
++ Главная страница
+
+![Image alt](https://github.com/yungdanie/movie_theater/raw/master/src/main/resources/img/main_page.png)
+____
++ Страница покупки билета
+
+![Image alt](https://github.com/yungdanie/movie_theater/raw/master/src/main/resources/img/buy_ticket.png)
