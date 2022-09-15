@@ -12,10 +12,8 @@ import ru.movietheater.model.Ticket;
 import ru.movietheater.model.User;
 import ru.movietheater.service.SessionService;
 import ru.movietheater.service.TicketService;
-import ru.movietheater.service.UserService;
 import ru.movietheater.util.ColumnRowSeparator;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 import java.util.Optional;
 @Controller
@@ -26,12 +24,9 @@ public class TicketControl {
 
     private final TicketService ticketService;
 
-    private final UserService userService;
-
-    public TicketControl(SessionService sessionService, TicketService ticketService, UserService userService) {
+    public TicketControl(SessionService sessionService, TicketService ticketService) {
         this.sessionService = sessionService;
         this.ticketService = ticketService;
-        this.userService = userService;
     }
 
     @GetMapping("/addTicketForm")
@@ -51,20 +46,9 @@ public class TicketControl {
     }
 
     @PostMapping("/createTicket")
-    public String createTicket(@ModelAttribute User user,
-                               @ModelAttribute Ticket ticket,
-                               Model model) {
-        Optional<User> optionalUser;
-        try {
-            optionalUser = userService.addUser(user);
-        } catch (SQLIntegrityConstraintViolationException e) {
-            optionalUser = userService.getUserByAttr(user);
-        }
-        if (optionalUser.isEmpty()) {
-            model.addAttribute("errorMessage", "Ошибка добавления пользователя");
-            return "failAddTicketForm";
-        }
-        ticket.setUser(optionalUser.get());
+    public String createTicket(Model model, @ModelAttribute User user,
+                               @ModelAttribute Ticket ticket) {
+        ticket.setUser(user);
         Optional<Ticket> optionalTicket = ticketService.addTicket(ticket);
         if (optionalTicket.isEmpty()) {
             model.addAttribute("errorMessage", "К сожалению выбранные места уже заняты");
