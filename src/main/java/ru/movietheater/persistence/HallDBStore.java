@@ -28,8 +28,8 @@ public class HallDBStore {
                 if (resultSet.next()) {
                     hall = new Hall(resultSet.getInt("id"),
                             resultSet.getString("name"),
-                            resultSet.getInt("columns"),
-                            resultSet.getInt("rows"));
+                            resultSet.getInt("columns_count"),
+                            resultSet.getInt("rows_count"));
                 }
             }
         } catch (SQLException e) {
