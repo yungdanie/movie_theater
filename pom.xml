@@ -21,7 +21,7 @@
         <java.version>17</java.version>
         <db.url>jdbc:postgresql://127.0.0.1:5432/theater</db.url>
         <db.username>postgres</db.username>
-        <db.password>PASSWORD</db.password>
+        <db.password>password</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
         <liquibase.verison>4.16.0</liquibase.verison>
         <profile.changeLogFile>db/changelog-root.xml</profile.changeLogFile>
