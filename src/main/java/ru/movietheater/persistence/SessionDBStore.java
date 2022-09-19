@@ -34,11 +34,11 @@ public class SessionDBStore {
     public Optional<Session> getSessionById(int id) {
         Optional<Session> session = Optional.empty();
         try (Connection cn = pool.getConnection();
-             PreparedStatement pr = cn.prepareStatement("select * from sessions where session_id = ?")) {
+             PreparedStatement pr = cn.prepareStatement("select * from sessions where id = ?")) {
             pr.setInt(1, id);
             try (ResultSet resultSet = pr.executeQuery()) {
                 if (resultSet.next()) {
-                    int sessionId = resultSet.getInt("session_id");
+                    int sessionId = resultSet.getInt("id");
                     List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
                     List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
                     Session newSession = new Session(sessionId, resultSet.getString("name"),
@@ -61,11 +61,10 @@ public class SessionDBStore {
         List<Session> sessions = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
-                     cn.prepareStatement("select * from sessions where actual = ? order by start_time ASC")) {
-            pr.setBoolean(1, true);
+                     cn.prepareStatement("select * from sessions where actual = true order by start_time ASC")) {
             try (ResultSet resultSet = pr.executeQuery()) {
                 while (resultSet.next()) {
-                    int sessionId = resultSet.getInt("session_id");
+                    int sessionId = resultSet.getInt("id");
                     List<Ticket> ticketList = ticketDBStore.getTicketsBySessionId(sessionId);
                     List<String> occColumns = getList(ticketList, x -> x.getColumn() + "/" + x.getRow());
                     Session newSession = new Session(sessionId,

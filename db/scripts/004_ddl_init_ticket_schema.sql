@@ -1,10 +1,10 @@
 CREATE TABLE ticket (
-    ticket_id         SERIAL PRIMARY KEY,
-    session_id INT NOT NULL REFERENCES sessions (session_id),
+    id         SERIAL PRIMARY KEY,
+    session_id INT NOT NULL REFERENCES sessions (id),
     pos_row    INT NOT NULL,
     cell       INT NOT NULL,
-    user_id    INT NOT NULL REFERENCES users (user_id),
-    unique (pos_row, cell)
+    user_id    INT NOT NULL REFERENCES users (id),
+    unique (pos_row, cell, session_id)
 );
 
 

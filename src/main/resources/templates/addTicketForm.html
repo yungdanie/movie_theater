@@ -42,7 +42,7 @@
             </div>
             <div class="card-body">
 
-                <form th:action="@{/createTicket}" id="addTicket" method="POST">
+                <form th:action="@{/createOrGetUser}" id="addTicket" method="POST">
                     <input type="hidden" th:value="${sess}" name="currentSession">
                     <input type="hidden" th:value="${column}" name="column">
                     <input type="hidden" th:value="${row}" name="row">
@@ -82,9 +82,9 @@
                             </div>
                         </div>
                     </div>
-
                     <button form="addTicket" type="submit" class="btn btn-primary btn-block" style="margin-top: 15px">Купить билет</button>
                 </form>
+
             </div>
         </div>
     </div>

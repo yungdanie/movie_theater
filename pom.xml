@@ -23,6 +23,8 @@
         <db.username>postgres</db.username>
         <db.password>PASSWORD</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
+        <liquibase.verison>4.16.0</liquibase.verison>
+        <profile.changeLogFile>db/changelog-root.xml</profile.changeLogFile>
     </properties>
 
     <dependencies>
@@ -68,11 +70,10 @@
             <version>2.9.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.16.0</version>
+            <version>${liquibase.verison}</version>
         </dependency>
 
         <dependency>
@@ -96,6 +97,30 @@
         </resources>
 
         <plugins>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.verison}</version>
+                <configuration>
+                    <url>${db.url}</url>
+                    <driver>${db.driver}</driver>
+                    <username>${db.username}</username>
+                    <password>${db.password}</password>
+                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>clearCheckSums</goal>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>

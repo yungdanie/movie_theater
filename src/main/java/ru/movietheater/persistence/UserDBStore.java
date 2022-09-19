@@ -57,7 +57,7 @@ public class UserDBStore {
             try (ResultSet resultSet = pr.executeQuery()) {
                 if (resultSet.next()) {
                     optionalUser = Optional.of(
-                            new User(resultSet.getInt("user_id"),
+                            new User(resultSet.getInt("id"),
                                     resultSet.getString("firstName"),
                                     resultSet.getString("surName"),
                                     resultSet.getString("email"),
@@ -74,12 +74,12 @@ public class UserDBStore {
         Optional<User> optionalUser = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement pr =
-                     cn.prepareStatement("select * from users where user_id = ?")) {
+                     cn.prepareStatement("select * from users where id = ?")) {
             pr.setInt(1, id);
             try (ResultSet resultSet = pr.getResultSet()) {
                 if (resultSet.next()) {
                     optionalUser = Optional.of(
-                            new User(resultSet.getInt("user_id"),
+                            new User(resultSet.getInt("id"),
                                     resultSet.getString("firstName"),
                                     resultSet.getString("surName"),
                                     resultSet.getString("email"),

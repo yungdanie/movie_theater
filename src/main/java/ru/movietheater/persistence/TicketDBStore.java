@@ -52,7 +52,7 @@ public class TicketDBStore {
             pr.setInt(1, id);
             try (ResultSet resultSet = pr.executeQuery()) {
                 while (resultSet.next()) {
-                    tickets.add(new Ticket(resultSet.getInt("ticket_id"),
+                    tickets.add(new Ticket(resultSet.getInt("id"),
                             resultSet.getInt("session_id"),
                             resultSet.getInt("pos_row"),
                             resultSet.getInt("cell"),
